@@ -18,24 +18,23 @@ public class BlobDownload {
 
     enum logheader {version_number,request_start_time,operation_type,request_status,http_status_code,end_to_end_latency_in_ms,server_latency_in_ms,authentication_type,requester_account_name,owner_account_name,service_type,request_url,requested_object_key,request_id_header,operation_count,requester_ip_address,request_version_header,request_header_size,request_packet_size,response_header_size,response_packet_size,request_content_length,request_md5,server_md5,etag_identifier,last_modified_time,conditions_used,user_agent_header,referrer_header,client_request_id};
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    static final SimpleDateFormat userinput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static final String LOGS = "/$logs/";
     static final String TYPE = "blob/";
     static final char DELIMITER = ';';
 
     public static void main(String[] args) {
         if(args.length<4){
-            System.err.println("Usage: azlogs <AccountName> <AccountKey> startDate(yyyy-MM-dd HH:mm:ss) endDate(yyyy-MM-dd HH:mm:ss) [columns(sorted)]");
+            System.err.println("Usage: azlogs <AccountName> <AccountKey> startDate(seconds since epoch) endDate(seconds since epoch) [columns(sorted)]");
             System.exit(1);
         }
         boolean filter = false;
         try {
             String storageConnectionString = "DefaultEndpointsProtocol=http;" + "AccountName="+args[0] + ";AccountKey="+args[1];
             CloudBlobContainer container = CloudStorageAccount.parse(storageConnectionString).createCloudBlobClient().getContainerReference(LOGS);
-            Calendar start = getInstance(); start.setTime(userinput.parse(args[2]));
-            Calendar end = getInstance(); end.setTime(userinput.parse(args[3]));
+            Calendar start = getInstance(); start.setTimeInMillis(Long.parseLong(args[2])*1000);
+            Calendar end = getInstance(); end.setTimeInMillis(Long.parseLong(args[3])*1000);
             ArrayList<Integer> indexes = new ArrayList<Integer>();
-            if(args.length>4){
+            if(args.length>4 && !args[4].isEmpty()){
                 filter=true;
                 String header = "";
                 for (String s : args[4].split(",")) {
@@ -45,7 +44,7 @@ public class BlobDownload {
                 }
                 System.out.println(header.replaceFirst(String.valueOf(DELIMITER),""));
             }else {
-                System.out.println(Arrays.toString(logheader.values()).replace(",",";").replace("[","").replace("]",""));
+                System.out.println(Arrays.toString(logheader.values()).replace(",",";").replace("[","").replace("]","").replace(" ",""));
             }
 
             System.err.println("Collecting logs from : " + start.getTime() + " to : " + end.getTime());

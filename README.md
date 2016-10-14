@@ -8,11 +8,11 @@ Download and analyze Azure storage logs over a specific range.
 
 # How to run
 
-``Usage: azlogs <AccountName> <AccountKey> startDate(yyyy-MM-dd HH:mm:ss) endDate(yyyy-MM-dd HH:mm:ss) [columns(sorted)]``
+``Usage: azlogs <AccountName> <AccountKey>startDate(seconds since epoch) endDate(seconds since epoch) [columns(sorted)]``
 
 Here is an example
 
-``java -jar azlogs.jar storage1 67t2Mw== "2016-09-30 00:33:00" "2016-09-30 00:59:00" "request_start_time,operation_type,end_to_end_latency_in_ms"  2>debug_logs > output``
+``java -jar azlogs.jar storage1 67t2Mw== "1476132794" "1476132895" "request_start_time,operation_type,end_to_end_latency_in_ms"  2>debug_logs > output``
 
 # How to analyze
 
