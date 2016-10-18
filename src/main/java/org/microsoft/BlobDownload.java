@@ -44,7 +44,7 @@ public class BlobDownload {
                 }
                 System.out.println(header.replaceFirst(String.valueOf(DELIMITER),""));
             }else {
-                System.out.println(Arrays.toString(logheader.values()).replace(",",";").replace("[","").replace("]","").replace(" ",""));
+                System.out.println(Arrays.toString(logheader.values()).replace(",",";").replace("[","").replace("]","").replace(" ","").replaceAll(" ",""));
             }
 
             System.err.println("Collecting logs from : " + start.getTime() + " to : " + end.getTime());
