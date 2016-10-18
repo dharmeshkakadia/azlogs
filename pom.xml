@@ -30,7 +30,24 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>jar-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>azlogs</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>
